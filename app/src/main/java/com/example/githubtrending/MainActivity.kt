@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             var getRepositoriesDeferred = apiService.getRepositories()
             try {
                 val listResult = getRepositoriesDeferred.await()
-                main_text.text = listResult
+                main_text.text = listResult[0].author
             } catch (e: Exception) {
                 Log.d("Error", e.toString())
             }
