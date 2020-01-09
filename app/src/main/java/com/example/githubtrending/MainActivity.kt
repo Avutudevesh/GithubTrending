@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.githubtrending.network.GithubApiService
+import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var apiService: GithubApiService
+    @Inject
+    lateinit var gitHubRepoListAdapter: GitHubRepoListAdapter
 
     private var job = Job()
 
@@ -24,7 +27,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as MyApplication).appComponent.inject(this)
         setContentView(R.layout.activity_main)
+        setUpRecyclerView()
         getContent()
+    }
+
+    private fun setUpRecyclerView() {
+        github_repo_recycler_view.adapter = gitHubRepoListAdapter
     }
 
     private fun getContent() {
@@ -32,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             var getRepositoriesDeferred = apiService.getRepositories()
             try {
                 val listResult = getRepositoriesDeferred.await()
-                main_text.text = listResult[0].author
+                gitHubRepoListAdapter.data = listResult
             } catch (e: Exception) {
                 Log.d("Error", e.toString())
             }
