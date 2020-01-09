@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             var getRepositoriesDeferred = apiService.getRepositories()
             try {
                 val listResult = getRepositoriesDeferred.await()
-                gitHubRepoListAdapter.data = listResult
+                gitHubRepoListAdapter.submitList(listResult)
             } catch (e: Exception) {
                 Log.d("Error", e.toString())
             }
