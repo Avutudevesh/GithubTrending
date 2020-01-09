@@ -3,6 +3,8 @@ package com.example.githubtrending
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubtrending.network.GithubApiService
 import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,7 +34,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        github_repo_recycler_view.adapter = gitHubRepoListAdapter
+        github_repo_recycler_view.apply {
+            adapter = gitHubRepoListAdapter
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
     }
 
     private fun getContent() {
