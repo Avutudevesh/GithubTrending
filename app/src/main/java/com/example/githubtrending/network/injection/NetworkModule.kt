@@ -1,6 +1,7 @@
 package com.example.githubtrending.network.injection
 
 import com.example.githubtrending.network.GithubApiService
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -14,6 +15,7 @@ class NetworkModule {
         val baseUrl = "https://github-trending-api.now.sh/"
         return Retrofit.Builder()
             .addConverterFactory(ScalarsConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .baseUrl(baseUrl)
             .build()
             .create(GithubApiService::class.java)
