@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Github Trending</string>
+    <string name="actionbar_title">Trending</string>
 </resources>

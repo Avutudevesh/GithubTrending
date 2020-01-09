@@ -3,6 +3,8 @@ package com.example.githubtrending
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toolbar
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubtrending.network.GithubApiService
@@ -29,8 +31,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as MyApplication).appComponent.inject(this)
         setContentView(R.layout.activity_main)
+        setUpActionBar()
         setUpRecyclerView()
         getContent()
+    }
+
+    private fun setUpActionBar() {
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.actionbar)
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -42,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getContent() {
         coroutineScope.launch {
-            var getRepositoriesDeferred = apiService.getRepositories()
+            val getRepositoriesDeferred = apiService.getRepositories()
             try {
                 val listResult = getRepositoriesDeferred.await()
                 gitHubRepoListAdapter.submitList(listResult)
