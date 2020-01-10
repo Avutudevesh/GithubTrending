@@ -1,10 +1,12 @@
 package com.example.githubtrending.view.viewholder
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubtrending.R
@@ -39,8 +41,13 @@ class GitRepoItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             languageText.text = item.language.orEmpty()
             forksText.text = item.forks?.toString() ?: "0"
             descriptionText.text = item.description
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                itemView.background = itemView.context.getDrawable(R.drawable.list_shadow_background)
+            }
+
         } else {
             expandableContainer.visibility = View.GONE
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context,android.R.color.white))
         }
         loadImage(item.avatar)
     }

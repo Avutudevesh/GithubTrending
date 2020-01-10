@@ -60,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
+            android:textAppearance="@style/RepoInfoText"
             app:layout_constraintStart_toEndOf="@+id/avatar"
             tools:text="This is a test description of the repo. This may be a very long description." />
 
@@ -75,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/language_circle_icon"
+                android:textAppearance="@style/RepoInfoText"
                 android:drawablePadding="4dp"
                 tools:text="C++" />
 
@@ -83,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textAppearance="@style/RepoInfoText"
                 android:drawableStart="@drawable/star_yellow_16"
                 tools:text="14,234" />
 
@@ -91,6 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textAppearance="@style/RepoInfoText"
                 android:drawableStart="@drawable/fork_black_16"
                 tools:text="4,357" />
 
