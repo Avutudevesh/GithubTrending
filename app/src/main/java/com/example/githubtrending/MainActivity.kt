@@ -38,8 +38,12 @@ class MainActivity : AppCompatActivity() {
             ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         viewModel.fetchGitHubRepoData()
         viewModel.state().observe(this, Observer { onStateChanged(it) })
-        retry_button.setOnClickListener{
+        retry_button.setOnClickListener {
             viewModel.fetchGitHubRepoData()
+        }
+        swipe_refresh.setOnRefreshListener {
+            viewModel.fetchGitHubRepoData()
+            swipe_refresh.isRefreshing = false
         }
     }
 
