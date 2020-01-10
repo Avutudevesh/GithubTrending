@@ -19,7 +19,7 @@ class NetworkInterceptor @Inject constructor(
             else
                 request.newBuilder().header(
                     "Cache-Control",
-                    "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
+                    "public, only-if-cached, max-stale=" + 60 * 60 * 2
                 ).build()
         }
         return chain.proceed(request)
