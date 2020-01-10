@@ -6,6 +6,7 @@ import com.example.githubtrending.network.GitHubRepoData
 import com.example.githubtrending.network.GithubApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class MainActivityViewModelImpl @Inject constructor(
@@ -39,6 +40,14 @@ class MainActivityViewModelImpl @Inject constructor(
         githubRepoDataList.let {
             if (it.isNotEmpty()) {
                 stateLiveData.value = State.Success(it.sortedByDescending { it.stars })
+            }
+        }
+    }
+
+    override fun sortRepoDateByName() {
+        githubRepoDataList.let {
+            if (it.isNotEmpty()) {
+                stateLiveData.value = State.Success(it.sortedBy { it.name.toLowerCase(Locale.ENGLISH) })
             }
         }
     }

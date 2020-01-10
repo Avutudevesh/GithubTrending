@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity() {
             R.id.sort_by_stars -> {
                 viewModel.sortRepoDataByStars()
             }
+            R.id.sort_by_name -> {
+                viewModel.sortRepoDateByName()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -74,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 shimmer_view_container.stopShimmer()
                 Handler().postDelayed({
                     github_repo_recycler_view.smoothScrollToPosition(0)
-                }, 200)
+                }, 800)
                 view_flipper.displayedChild = Child.LOADED.ordinal
             }
             is MainActivityViewModel.State.Error -> {
