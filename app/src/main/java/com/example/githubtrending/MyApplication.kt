@@ -7,6 +7,6 @@ import com.example.githubtrending.injection.DaggerAppComponent
 open class MyApplication : Application() {
 
     val appComponent : AppComponent by lazy {
-        DaggerAppComponent.create()
+        DaggerAppComponent.factory().create(applicationContext)
     }
 }
