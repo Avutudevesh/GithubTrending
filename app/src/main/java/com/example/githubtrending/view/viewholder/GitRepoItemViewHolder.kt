@@ -1,12 +1,17 @@
 package com.example.githubtrending.view.viewholder
 
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubtrending.R
@@ -39,17 +44,30 @@ class GitRepoItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             expandableContainer.visibility = View.VISIBLE
             startsText.text = item.stars?.toString() ?: "0"
             languageText.text = item.language.orEmpty()
+            setLanguageDrawableColor(item.languageColor)
             forksText.text = item.forks?.toString() ?: "0"
             descriptionText.text = item.description
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                itemView.background = itemView.context.getDrawable(R.drawable.list_shadow_background)
+                itemView.background =
+                    itemView.context.getDrawable(R.drawable.list_shadow_background)
             }
 
         } else {
             expandableContainer.visibility = View.GONE
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context,android.R.color.white))
+            itemView.setBackgroundColor(
+                ContextCompat.getColor(
+                    itemView.context,
+                    android.R.color.white
+                )
+            )
         }
         loadImage(item.avatar)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setLanguageDrawableColor(color: String?) {
+        val d = languageText.compoundDrawables[0]
+        d?.setColorFilter(Color.parseColor(color ?: "#FFFFFF"), PorterDuff.Mode.SRC_ATOP)
     }
 
     private fun loadImage(url: String) {

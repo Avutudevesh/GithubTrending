@@ -75,7 +75,7 @@
                 android:id="@+id/language_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/language_circle_icon"
+                android:drawableLeft="@drawable/language_circle_icon"
                 android:textAppearance="@style/RepoInfoText"
                 android:drawablePadding="4dp"
                 tools:text="C++" />
