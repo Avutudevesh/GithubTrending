@@ -16,4 +16,6 @@ abstract class MainActivityViewModel : ViewModel() {
 
     abstract fun fetchGitHubRepoData()
 
+    abstract fun sortRepoDataByStars()
+
 }

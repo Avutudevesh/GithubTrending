@@ -2,7 +2,9 @@ package com.example.githubtrending
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -56,11 +58,23 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sort_by_stars -> {
+                viewModel.sortRepoDataByStars()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun onStateChanged(state: MainActivityViewModel.State) {
         when (state) {
             is MainActivityViewModel.State.Success -> {
                 gitHubRepoListAdapter.submitList(state.result)
                 shimmer_view_container.stopShimmer()
+                Handler().postDelayed({
+                    github_repo_recycler_view.smoothScrollToPosition(0)
+                }, 200)
                 view_flipper.displayedChild = Child.LOADED.ordinal
             }
             is MainActivityViewModel.State.Error -> {
