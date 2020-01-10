@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
 import com.example.githubtrending.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_error.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
             ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         viewModel.fetchGitHubRepoData()
         viewModel.state().observe(this, Observer { onStateChanged(it) })
+        retry_button.setOnClickListener{
+            viewModel.fetchGitHubRepoData()
+        }
     }
 
     private fun onStateChanged(state: MainActivityViewModel.State) {

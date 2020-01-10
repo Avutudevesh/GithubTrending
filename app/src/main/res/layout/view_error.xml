@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:layout_centerVertical="true"
     android:orientation="vertical">
 
-
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nointernet_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         app:srcCompat="@drawable/nointernet_connection" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/error_main_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center_horizontal"
         android:text="@string/something_went_wrong"
+        android:layout_centerInParent="true"
         android:textColor="#4A4A4A"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_below="@+id/nointernet_image"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/error_sub_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -33,5 +35,20 @@
         android:gravity="center_horizontal"
         android:text="@string/error_message"
         android:textColor="#929292"
-        android:textSize="15sp" />
-</LinearLayout>
+        android:textSize="15sp"
+        android:layout_below="@+id/error_main_heading"/>
+
+    <Button
+        android:id="@+id/retry_button"
+        android:background="@drawable/error_button_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#31B057"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="15sp"
+        android:text="@string/retry"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
