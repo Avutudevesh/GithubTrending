@@ -14,7 +14,7 @@ abstract class MainActivityViewModel : ViewModel() {
 
     abstract fun state(): LiveData<State>
 
-    abstract fun fetchGitHubRepoData()
+    abstract fun fetchGitHubRepoData(isForceRefresh: Boolean)
 
     abstract fun sortRepoDataByStars()
 

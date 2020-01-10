@@ -20,9 +20,10 @@ class MainActivityViewModelImpl @Inject constructor(
 
     override fun state() = stateLiveData
 
-    override fun fetchGitHubRepoData() {
+    override fun fetchGitHubRepoData(isForceRefresh: Boolean) {
         coroutineScope.launch {
-            val getRepositoriesDeferred = apiService.getRepositories()
+            val cacheHeader = if(isForceRefresh) "no-cache" else null
+            val getRepositoriesDeferred = apiService.getRepositories(cacheHeader)
             try {
                 stateLiveData.value = State.Loading
                 val listResult = getRepositoriesDeferred.await()

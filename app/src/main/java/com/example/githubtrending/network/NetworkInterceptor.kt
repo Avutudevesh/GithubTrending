@@ -13,13 +13,15 @@ class NetworkInterceptor @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        request = if (hasNetwork(context)!!)
-            request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build()
-        else
-            request.newBuilder().header(
-                "Cache-Control",
-                "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
-            ).build()
+        if (request.header("Cache-Control") != "no-cache") {
+            request = if (hasNetwork(context)!!)
+                request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build()
+            else
+                request.newBuilder().header(
+                    "Cache-Control",
+                    "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
+                ).build()
+        }
         return chain.proceed(request)
     }
 

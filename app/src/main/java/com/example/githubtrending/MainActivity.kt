@@ -41,13 +41,13 @@ class MainActivity : AppCompatActivity() {
         setUpRecyclerView()
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        viewModel.fetchGitHubRepoData()
+        viewModel.fetchGitHubRepoData(false)
         viewModel.state().observe(this, Observer { onStateChanged(it) })
         retry_button.setOnClickListener {
-            viewModel.fetchGitHubRepoData()
+            viewModel.fetchGitHubRepoData(true)
         }
         swipe_refresh.setOnRefreshListener {
-            viewModel.fetchGitHubRepoData()
+            viewModel.fetchGitHubRepoData(true)
             swipe_refresh.isRefreshing = false
         }
     }
