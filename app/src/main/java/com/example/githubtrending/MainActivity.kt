@@ -2,6 +2,7 @@ package com.example.githubtrending
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -47,6 +48,12 @@ class MainActivity : AppCompatActivity() {
             viewModel.fetchGitHubRepoData()
             swipe_refresh.isRefreshing = false
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.overflow_menu, menu)
+        return true
     }
 
     private fun onStateChanged(state: MainActivityViewModel.State) {

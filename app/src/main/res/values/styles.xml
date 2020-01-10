@@ -6,12 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionOverflowButtonStyle">@style/ActionBarStyle</item>
     </style>
 
     <style name="RepoInfoText">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">12sp</item>
         <item name="android:color">#52575C</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/more_black_24</item>
+        <item name="android:background">?android:attr/actionBarItemBackground</item>
+        <item name="android:contentDescription">"Menu"</item>
     </style>
 
 </resources>
