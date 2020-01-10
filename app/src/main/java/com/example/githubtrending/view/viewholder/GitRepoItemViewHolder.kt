@@ -23,10 +23,18 @@ class GitRepoItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     private val authorName: TextView = itemView.findViewById(R.id.author_name)
     private val gitHubRepoName: TextView = itemView.findViewById(R.id.repo_name)
     private val avatar: CircleImageView = itemView.findViewById(R.id.avatar)
+    private val startsText:TextView = itemView.findViewById(R.id.stars_text_view)
+    private val languageText: TextView = itemView.findViewById(R.id.language_text_view)
+    private val forksText: TextView = itemView.findViewById(R.id.forks_text_view)
+    private val descriptionText: TextView = itemView.findViewById(R.id.github_repo_description)
 
     fun bind(item: GitHubRepoData) {
         authorName.text = item.author
         gitHubRepoName.text = item.name
+        startsText.text = item.stars?.toString() ?: "0"
+        languageText.text = item.language.orEmpty()
+        forksText.text = item.forks?.toString() ?: "0"
+        descriptionText.text = item.description
         loadImage(item.avatar)
     }
 
