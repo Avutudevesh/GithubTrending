@@ -12,6 +12,7 @@ import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
 import com.example.githubtrending.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
+import kotlinx.android.synthetic.main.view_loading.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainActivityViewModel
 
     private enum class Child {
+        LOADING,
         LOADED,
         ERROR
     }
@@ -51,13 +53,16 @@ class MainActivity : AppCompatActivity() {
         when (state) {
             is MainActivityViewModel.State.Success -> {
                 gitHubRepoListAdapter.submitList(state.result)
+                shimmer_view_container.stopShimmer()
                 view_flipper.displayedChild = Child.LOADED.ordinal
             }
             is MainActivityViewModel.State.Error -> {
+                shimmer_view_container.stopShimmer()
                 view_flipper.displayedChild = Child.ERROR.ordinal
             }
             is MainActivityViewModel.State.Loading -> {
-                //ToDo: Add loading screen
+                view_flipper.displayedChild = Child.LOADING.ordinal
+                shimmer_view_container.startShimmer()
             }
         }
 
@@ -75,6 +80,11 @@ class MainActivity : AppCompatActivity() {
             adapter = gitHubRepoListAdapter
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        shimmer_view_container.stopShimmer()
     }
 
 }
