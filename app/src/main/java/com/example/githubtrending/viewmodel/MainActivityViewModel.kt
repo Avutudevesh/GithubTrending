@@ -18,6 +18,6 @@ abstract class MainActivityViewModel : ViewModel() {
 
     abstract fun sortRepoDataByStars()
 
-    abstract fun sortRepoDateByName()
+    abstract fun sortRepoDataByName()
 
 }

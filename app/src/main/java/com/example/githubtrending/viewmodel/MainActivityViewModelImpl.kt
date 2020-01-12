@@ -1,6 +1,7 @@
 package com.example.githubtrending.viewmodel
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import com.example.githubtrending.network.GitHubRepoData
 import com.example.githubtrending.network.GithubApiService
@@ -16,7 +17,8 @@ class MainActivityViewModelImpl @Inject constructor(
 
     private val stateLiveData = MutableLiveData<State>()
 
-    private var githubRepoDataList = emptyList<GitHubRepoData>()
+    @VisibleForTesting
+    var githubRepoDataList = emptyList<GitHubRepoData>()
 
     override fun state() = stateLiveData
 
@@ -45,7 +47,7 @@ class MainActivityViewModelImpl @Inject constructor(
         }
     }
 
-    override fun sortRepoDateByName() {
+    override fun sortRepoDataByName() {
         githubRepoDataList.let {
             if (it.isNotEmpty()) {
                 stateLiveData.value = State.Success(it.sortedBy { it.name.toLowerCase(Locale.ENGLISH) })

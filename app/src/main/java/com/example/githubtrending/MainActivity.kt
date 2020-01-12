@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.sortRepoDataByStars()
             }
             R.id.sort_by_name -> {
-                viewModel.sortRepoDateByName()
+                viewModel.sortRepoDataByName()
             }
         }
         return super.onOptionsItemSelected(item)
