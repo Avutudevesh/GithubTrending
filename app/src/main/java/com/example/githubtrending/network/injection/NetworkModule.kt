@@ -1,6 +1,8 @@
 package com.example.githubtrending.network.injection
 
 import android.content.Context
+import com.example.githubtrending.network.GitHubRepoDataRepository
+import com.example.githubtrending.network.GitHubRepoDataRepositoryImpl
 import com.example.githubtrending.network.GithubApiService
 import com.example.githubtrending.network.NetworkInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -29,7 +31,7 @@ class NetworkModule {
 
 
     @Provides
-    fun provideOkHttpClient(cache: Cache,  networkInterceptor: NetworkInterceptor): OkHttpClient =
+    fun provideOkHttpClient(cache: Cache, networkInterceptor: NetworkInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(networkInterceptor)
@@ -37,7 +39,7 @@ class NetworkModule {
 
 
     @Provides
-    fun provideGithubApiService( moshi: Moshi, okHttpClient: OkHttpClient): GithubApiService {
+    fun provideGithubApiService(moshi: Moshi, okHttpClient: OkHttpClient): GithubApiService {
         val baseUrl = "https://github-trending-api.now.sh/"
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -47,4 +49,8 @@ class NetworkModule {
             .build()
             .create(GithubApiService::class.java)
     }
+
+    @Provides
+    fun providesGitHubRepoDataRepository(githubApiService: GithubApiService): GitHubRepoDataRepository =
+        GitHubRepoDataRepositoryImpl(githubApiService)
 }

@@ -3,8 +3,11 @@ package com.example.githubtrending.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.githubtrending.network.GitHubRepoData
-import com.example.githubtrending.network.GithubApiService
-import kotlinx.coroutines.CoroutineScope
+import com.example.githubtrending.network.GitHubRepoDataRepository
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.core.IsEqual
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -13,6 +16,7 @@ import org.mockito.BDDMockito.*
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
+import java.lang.IllegalStateException
 import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
@@ -21,19 +25,22 @@ class MainActivityViewModelImplTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-
-    @Mock
-    private lateinit var gitHubApiService: GithubApiService
-    @Mock
-    private lateinit var coroutineScope: CoroutineScope
+    private var coroutineScope = CoroutineScope(Job() + Dispatchers.Unconfined)
     @Mock
     private lateinit var mockObserver: Observer<MainActivityViewModel.State>
+    @Mock
+    private lateinit var mockGithubRepoList: List<GitHubRepoData>
+    @Mock
+    private lateinit var mockGitHubRepoDataRepository: GitHubRepoDataRepository
 
     lateinit var subject: MainActivityViewModelImpl
 
     @Before
     fun setUp() {
-        subject = MainActivityViewModelImpl(coroutineScope, gitHubApiService)
+        subject = MainActivityViewModelImpl(
+            coroutineScope,
+            mockGitHubRepoDataRepository
+        )
         subject.state().observeForever(mockObserver)
     }
 
@@ -96,6 +103,65 @@ class MainActivityViewModelImplTest {
         //THEN
         then(mockObserver).shouldHaveZeroInteractions()
 
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun fetchGitHubRepoData_notForceRefreshWhenSuccess() = runBlockingTest {
+        given(mockGitHubRepoDataRepository.fetchGitHubRepoData(false)).willReturn(mockGithubRepoList)
+
+        subject.fetchGitHubRepoData(false)
+
+        assertThat(subject.githubRepoDataList, IsEqual(mockGithubRepoList))
+        then(mockObserver).should(Mockito.times(1)).onChanged(MainActivityViewModel.State.Loading)
+        then(mockObserver).should(Mockito.times(1))
+            .onChanged(MainActivityViewModel.State.Success(mockGithubRepoList))
+        then(mockObserver).shouldHaveNoMoreInteractions()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun fetchGitHubRepoData_notForceRefreshWhenError() = runBlockingTest {
+        given(mockGitHubRepoDataRepository.fetchGitHubRepoData(false)).willThrow(IllegalStateException())
+
+        subject.fetchGitHubRepoData(false)
+
+        assertThat(subject.githubRepoDataList, IsEqual(emptyList()))
+        then(mockObserver).should(Mockito.times(1)).onChanged(MainActivityViewModel.State.Loading)
+        then(mockObserver).should(Mockito.times(1))
+            .onChanged(MainActivityViewModel.State.Error)
+        then(mockObserver).shouldHaveNoMoreInteractions()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun fetchGitHubRepoData_ForceRefreshWhenSuccess() = runBlockingTest {
+        given(mockGitHubRepoDataRepository.fetchGitHubRepoData(true)).willReturn(mockGithubRepoList)
+
+        subject.fetchGitHubRepoData(true)
+
+        assertThat(subject.githubRepoDataList, IsEqual(mockGithubRepoList))
+        then(mockObserver).should(Mockito.times(1)).onChanged(MainActivityViewModel.State.Loading)
+        then(mockObserver).should(Mockito.times(1)).onChanged(
+            MainActivityViewModel.State.Success(
+                mockGithubRepoList
+            )
+        )
+        then(mockObserver).shouldHaveNoMoreInteractions()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun fetchGitHubRepoData_ForceRefreshWhenError() = runBlockingTest {
+        given(mockGitHubRepoDataRepository.fetchGitHubRepoData(true)).willThrow(IllegalStateException())
+
+        subject.fetchGitHubRepoData(true)
+
+        assertThat(subject.githubRepoDataList, IsEqual(emptyList()))
+        then(mockObserver).should(Mockito.times(1)).onChanged(MainActivityViewModel.State.Loading)
+        then(mockObserver).should(Mockito.times(1))
+            .onChanged(MainActivityViewModel.State.Error)
+        then(mockObserver).shouldHaveNoMoreInteractions()
     }
 
     private fun givenRepoData(): List<GitHubRepoData> {

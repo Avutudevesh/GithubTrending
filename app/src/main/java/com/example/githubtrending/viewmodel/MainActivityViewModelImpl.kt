@@ -1,10 +1,9 @@
 package com.example.githubtrending.viewmodel
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import com.example.githubtrending.network.GitHubRepoData
-import com.example.githubtrending.network.GithubApiService
+import com.example.githubtrending.network.GitHubRepoDataRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 class MainActivityViewModelImpl @Inject constructor(
     private val coroutineScope: CoroutineScope,
-    private val apiService: GithubApiService
+    private val gitHubRepoDataRepository: GitHubRepoDataRepository
 ) : MainActivityViewModel() {
 
     private val stateLiveData = MutableLiveData<State>()
@@ -24,15 +23,12 @@ class MainActivityViewModelImpl @Inject constructor(
 
     override fun fetchGitHubRepoData(isForceRefresh: Boolean) {
         coroutineScope.launch {
-            val cacheHeader = if(isForceRefresh) "no-cache" else null
-            val getRepositoriesDeferred = apiService.getRepositories(cacheHeader)
             try {
                 stateLiveData.value = State.Loading
-                val listResult = getRepositoriesDeferred.await()
-                githubRepoDataList = listResult
-                stateLiveData.value = State.Success(listResult)
+                val gitHubRepoData = gitHubRepoDataRepository.fetchGitHubRepoData(isForceRefresh)
+                githubRepoDataList = gitHubRepoData
+                stateLiveData.value = State.Success(gitHubRepoData)
             } catch (e: Exception) {
-                Log.d("Error", e.toString())
                 githubRepoDataList = emptyList()
                 stateLiveData.value = State.Error
             }
