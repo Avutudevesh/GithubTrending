@@ -82,10 +82,7 @@ class MainActivityTest {
     @Test
     fun whenClickedItemShouldExpand() {
         //GIVEN
-
-        givenTestList()
-        stateLiveData.postValue(MainActivityViewModel.State.Success(resultlist))
-        onView(withId(R.id.view_content)).check(matches(isDisplayed()))
+        givenContentShown()
         performClickOnListItem(0)
 
         //THEN
@@ -96,9 +93,7 @@ class MainActivityTest {
     @Test
     fun whenOneItemIsExpandedAndOtherItemClicked() {
         //GIVEN - First Item Expanded
-        givenTestList()
-        stateLiveData.postValue(MainActivityViewModel.State.Success(resultlist))
-        onView(withId(R.id.view_content)).check(matches(isDisplayed()))
+        givenContentShown()
         performClickOnListItem(0)
         assertThatExpandableViewIsVisibleAtPosition(0)
 
@@ -108,6 +103,23 @@ class MainActivityTest {
         //THEN - Second Item is expanded and first item is closed
         assertThatExpandableViewIsVisibleAtPosition(1)
         assertThatExpandableViewIsHiddenAtPosition(0)
+    }
+
+    @Test
+    fun whenClickedOnExpandedItemItShouldCollapse() {
+        givenContentShown()
+        performClickOnListItem(0)
+        assertThatExpandableViewIsVisibleAtPosition(0)
+
+        performClickOnListItem(0)
+
+        assertThatExpandableViewIsHiddenAtPosition(0)
+    }
+
+    private fun givenContentShown() {
+        givenTestList()
+        stateLiveData.postValue(MainActivityViewModel.State.Success(resultlist))
+        onView(withId(R.id.view_content)).check(matches(isDisplayed()))
     }
 
     private fun performClickOnListItem(position: Int) {
