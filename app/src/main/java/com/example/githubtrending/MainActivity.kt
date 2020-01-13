@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
 import com.example.githubtrending.viewmodel.MainActivityViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
-import kotlinx.android.synthetic.main.view_loading.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -75,19 +75,19 @@ class MainActivity : AppCompatActivity() {
         when (state) {
             is MainActivityViewModel.State.Success -> {
                 gitHubRepoListAdapter.submitList(state.result)
-                shimmer_view_container.stopShimmer()
+                (loading_view as ShimmerFrameLayout).stopShimmer()
                 Handler().postDelayed({
                     github_repo_recycler_view.smoothScrollToPosition(0)
                 }, 800)
                 view_flipper.displayedChild = Child.LOADED.ordinal
             }
             is MainActivityViewModel.State.Error -> {
-                shimmer_view_container.stopShimmer()
+                (loading_view as ShimmerFrameLayout).stopShimmer()
                 view_flipper.displayedChild = Child.ERROR.ordinal
             }
             is MainActivityViewModel.State.Loading -> {
                 view_flipper.displayedChild = Child.LOADING.ordinal
-                shimmer_view_container.startShimmer()
+                (loading_view as ShimmerFrameLayout).startShimmer()
             }
         }
 
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        shimmer_view_container.stopShimmer()
+        (loading_view as ShimmerFrameLayout).stopShimmer()
     }
 
 }

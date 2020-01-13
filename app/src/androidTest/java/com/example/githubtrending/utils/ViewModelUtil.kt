@@ -1,4 +1,4 @@
-package com.example.githubtrending
+package com.example.githubtrending.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
