@@ -13,6 +13,7 @@ import org.junit.Rule
 import org.junit.runner.RunWith
 import androidx.test.rule.ActivityTestRule
 import com.example.githubtrending.network.GitHubRepoData
+import com.example.githubtrending.utils.TestUtils.withRecyclerView
 import com.example.githubtrending.utils.ViewModelUtil
 import com.example.githubtrending.utils.createFakeActivityInjector
 import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
@@ -52,33 +53,91 @@ class MainActivityTest {
 
     @Test
     fun mainActivity_LoadingScreenShown() {
+        //GIVEN
         stateLiveData.postValue(MainActivityViewModel.State.Loading)
+
+        //THEN
         onView(withId(R.id.loading_view)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun mainActivity_whenContentShown() {
+    fun mainActivity_ContentShown() {
+        //GIVEN
         givenTestList()
         stateLiveData.postValue(MainActivityViewModel.State.Success(resultlist))
+
+        //THEN
         onView(withId(R.id.view_content)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun mainActivity_whenErrorErrorScreenShown() {
+    fun mainActivity_ErrorScreenShown() {
+        //GIVEN
         stateLiveData.postValue(MainActivityViewModel.State.Error)
+
+        //THEN
         onView(withId(R.id.error_view)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun performClick() {
+    fun whenClickedItemShouldExpand() {
+        //GIVEN
+
         givenTestList()
         stateLiveData.postValue(MainActivityViewModel.State.Success(resultlist))
         onView(withId(R.id.view_content)).check(matches(isDisplayed()))
+        performClickOnListItem(0)
+
+        //THEN
+        assertThatExpandableViewIsVisibleAtPosition(0)
+        assertThatExpandableViewIsHiddenAtPosition(1)
+    }
+
+    @Test
+    fun whenOneItemIsExpandedAndOtherItemClicked() {
+        //GIVEN - First Item Expanded
+        givenTestList()
+        stateLiveData.postValue(MainActivityViewModel.State.Success(resultlist))
+        onView(withId(R.id.view_content)).check(matches(isDisplayed()))
+        performClickOnListItem(0)
+        assertThatExpandableViewIsVisibleAtPosition(0)
+
+        //WHEN - Second Item in list clicked
+        performClickOnListItem(1)
+
+        //THEN - Second Item is expanded and first item is closed
+        assertThatExpandableViewIsVisibleAtPosition(1)
+        assertThatExpandableViewIsHiddenAtPosition(0)
+    }
+
+    private fun performClickOnListItem(position: Int) {
         onView(withId(R.id.github_repo_recycler_view)).perform(
             RecyclerViewActions.actionOnItemAtPosition<GitRepoItemViewHolder>(
-                0,
+                position,
                 click()
             )
+        )
+    }
+
+    private fun assertThatExpandableViewIsVisibleAtPosition(position:Int) {
+        onView(
+            withRecyclerView(R.id.github_repo_recycler_view).atPositionOnView(
+                position,
+                R.id.expandable_item
+            )
+        ).check(
+            matches(withEffectiveVisibility(Visibility.VISIBLE))
+        )
+    }
+
+    private fun assertThatExpandableViewIsHiddenAtPosition(position:Int) {
+        onView(
+            withRecyclerView(R.id.github_repo_recycler_view).atPositionOnView(
+                position,
+                R.id.expandable_item
+            )
+        ).check(
+            matches(withEffectiveVisibility(Visibility.GONE))
         )
     }
 
