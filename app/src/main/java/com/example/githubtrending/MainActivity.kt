@@ -40,10 +40,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setUpActionBar()
         setUpRecyclerView()
+        setUpViewModel()
+        setUpOnClickListeners()
+
+    }
+
+    private fun setUpViewModel() {
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         viewModel.fetchGitHubRepoData(false)
         viewModel.state().observe(this, Observer { onStateChanged(it) })
+    }
+
+    private fun setUpOnClickListeners() {
         retry_button.setOnClickListener {
             viewModel.fetchGitHubRepoData(true)
         }
