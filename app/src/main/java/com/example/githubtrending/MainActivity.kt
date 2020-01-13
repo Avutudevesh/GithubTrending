@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubtrending.view.adapter.GitHubRepoListAdapter
 import com.example.githubtrending.viewmodel.MainActivityViewModel
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_loading.*
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as MyApplication).appComponent.inject(this)
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_main)
         setUpActionBar()
         setUpRecyclerView()

@@ -1,25 +1,29 @@
 package com.example.githubtrending.injection
 
-import android.content.Context
-import com.example.githubtrending.MainActivity
+import com.example.githubtrending.MyApplication
 import com.example.githubtrending.network.injection.NetworkModule
-import com.example.githubtrending.viewmodel.MainActivityViewModelModule
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 
 @Component(
     modules = [
-        NetworkModule::class,
-        MainActivityViewModelModule::class
+        AndroidInjectionModule::class,
+        ActivityBindings::class,
+        NetworkModule::class
     ]
 )
 interface AppComponent {
 
-    @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+    @Component.Builder
+    interface Builder {
+
+        @BindsInstance
+        fun application(application: MyApplication): Builder
+
+        fun build(): AppComponent
     }
 
-    fun inject(activity: MainActivity)
+    fun inject(application: MyApplication)
 
 }

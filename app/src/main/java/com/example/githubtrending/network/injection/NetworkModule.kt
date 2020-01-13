@@ -1,6 +1,7 @@
 package com.example.githubtrending.network.injection
 
 import android.content.Context
+import com.example.githubtrending.MyApplication
 import com.example.githubtrending.network.GitHubRepoDataRepository
 import com.example.githubtrending.network.GitHubRepoDataRepositoryImpl
 import com.example.githubtrending.network.GithubApiService
@@ -17,6 +18,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 class NetworkModule {
+
+    @Provides
+    fun provideContext(application: MyApplication) : Context = application.applicationContext
 
     @Provides
     fun providesMoshi(): Moshi = Moshi.Builder()
