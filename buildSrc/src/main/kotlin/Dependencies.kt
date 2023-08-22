@@ -16,7 +16,11 @@ object Deps {
     val roomRuntime by lazy { "androidx.room:room-runtime:${Versions.room}" }
     val roomCompiler by lazy { "androidx.room:room-compiler:${Versions.room}" }
     val roomKtx by lazy { "androidx.room:room-ktx:${Versions.room}" }
+    val roomPaging by lazy { "androidx.room:room-paging:${Versions.room}" }
     val logInterceptor by lazy { "com.squareup.okhttp3:logging-interceptor:${Versions.logInterceptor}" }
     val composeNav by lazy { "androidx.navigation:navigation-compose:${Versions.composeNav}" }
     val coil by lazy { "io.coil-kt:coil-compose:${Versions.coil}" }
+    val pagingRuntime by lazy { "androidx.paging:paging-runtime:${Versions.paging}" }
+    val pagingCompose by lazy { "androidx.paging:paging-compose:${Versions.pagingCompose}" }
+    val datastore by lazy { "androidx.datastore:datastore-preferences:${Versions.datastore}" }
 }

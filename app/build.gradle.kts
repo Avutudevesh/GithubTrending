@@ -20,6 +20,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+            }
+        }
     }
 
     buildTypes {
@@ -64,6 +69,13 @@ dependencies {
     implementation(Deps.retrofitSerializationConverter)
     implementation(Deps.coil)
     implementation(Deps.logInterceptor)
+    implementation(Deps.pagingRuntime)
+    implementation(Deps.pagingCompose)
+    implementation(Deps.roomRuntime)
+    kapt(Deps.roomCompiler)
+    implementation(Deps.roomKtx)
+    implementation(Deps.datastore)
+    implementation(Deps.roomPaging)
 
 
     testImplementation("junit:junit:4.13.2")

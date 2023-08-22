@@ -1,5 +1,6 @@
 package com.dev.githubtrending.data.network.models
 
+import com.dev.githubtrending.data.local.LocalRepo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,7 +23,21 @@ data class Repo(
     @SerialName("forks_count")
     val forks: String,
     val owner: Owner
-)
+) {
+    fun toLocalRepo() : LocalRepo {
+        return LocalRepo(
+            this.id,
+            this.name,
+            this.url,
+            this.description,
+            this.language,
+            this.stars,
+            this.forks,
+            this.owner.login,
+            this.owner.avatar
+        )
+    }
+}
 
 @Serializable
 data class Owner(

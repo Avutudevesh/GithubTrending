@@ -14,13 +14,12 @@ import retrofit2.http.Query
 
 interface GithubNetworkDataSource {
 
-    @Headers("Authorization: Bearer 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")
     @GET("/search/repositories")
     suspend fun getTrendingRepositories(
         @Query("sort") sort: String = "stars",
         @Query("order") order: String = "desc",
         @Query("page") page: Int = 1,
-        @Query("per_page") limit: Int = 100,
+        @Query("per_page") limit: Int = 30,
         @Query("q") search: String = "followers:>=1000",
     ): NetworkGitRepos
 

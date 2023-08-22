@@ -13,4 +13,7 @@ object Versions {
     const val logInterceptor = "4.11.0"
     const val composeNav = "2.5.3"
     const val coil = "2.4.0"
+    const val paging = "3.1.1"
+    const val pagingCompose = "3.2.0"
+    const val datastore = "1.0.0"
 }
