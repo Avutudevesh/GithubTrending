@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "GithubTrending"
 include(":app")
+include(":macrobenchmark")
